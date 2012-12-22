@@ -37,15 +37,23 @@ public class VkLogin extends Activity {
             @Override
             public void onPageFinished (WebView view, String url)
             {
-                if(getParametersFromUrl(url).get("access_token")!=null)
+                if(url.indexOf("access_token")!=-1){
                     Log.e("TOKEN",getParametersFromUrl(url).get("access_token")) ;
+                    Intent response=new Intent();
+                    response.putExtra("TOKEN",getParametersFromUrl(url).get("access_token"));
+                    setResult(RESULT_OK,response);
+                    finish();
+                }
 
+
+
+                    //finish();
             }
 
 
         });
 
-         //String token=getParametersFromUrl("https://oauth.vk.com/blank.html#access_token=534244990d5601c21759ed6e6fd5e18f5fed66ac0107e7332a6c9c22fae0dd8061d9b671d15579cff8d10&expires_in=86400&user_id=14364731").get("user_id)")
+
 
 
 
