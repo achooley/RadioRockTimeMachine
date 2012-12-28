@@ -9,7 +9,24 @@ package com.example.Rock;
  */
 public class Audio {
 
+    public String getSongName() {
+        return SongName;
+    }
+
+    public void setSongName(String songName) {
+        SongName = songName;
+    }
+
     private String SongName;
+
+    public String getArtist() {
+        return Artist;
+    }
+
+    public void setArtist(String artist) {
+        Artist = artist;
+    }
+
     private String Artist;
     private String Url;
 
@@ -27,16 +44,6 @@ public class Audio {
         Url = url;
     }
 
-    public void setArtist(String artist) {
-        Artist = artist;
-    }
 
-    public String getSongName() {
-        return SongName;
-    }
-
-    public void setSongName(String songName) {
-        SongName = songName;
-    }
 
 }
