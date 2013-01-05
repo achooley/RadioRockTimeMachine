@@ -8,7 +8,19 @@ package com.example.Rock;
  * To change this template use File | Settings | File Templates.
  */
 public class Audio {
+    private String SongName;
+    private String Artist;
+    private String Url;
 
+    public int getDuration() {
+        return Duration;
+    }
+
+    public void setDuration(int duration) {
+        Duration = duration;
+    }
+
+    private int Duration;
     public String getSongName() {
         return SongName;
     }
@@ -17,7 +29,7 @@ public class Audio {
         SongName = songName;
     }
 
-    private String SongName;
+
 
     public String getArtist() {
         return Artist;
@@ -27,13 +39,13 @@ public class Audio {
         Artist = artist;
     }
 
-    private String Artist;
-    private String Url;
 
-    public Audio(String Artist,String SongName,String Url) {
+
+    public Audio(String Artist,String SongName,String Url,int duration) {
         setArtist(Artist);
         setSongName(SongName);
         setUrl(Url);
+        setDuration(duration);
     }
 
     public String getUrl() {

@@ -1,7 +1,9 @@
 package com.example.Rock;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.URLUtil;
@@ -13,6 +15,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,30 +36,41 @@ public class MyActivity extends Activity {
     AudioManager manager;
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        String[] names = { "Иван", "Марья", "Петр", "Антон", "Даша", "Борис",
-                "Костя", "Игорь", "Анна", "Денис", "Андрей" };
 
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        lvMain= (ListView) findViewById(R.id.lvMain);
-        token=(TextView)findViewById(R.id.token);
-         Songs=new ArrayList<Audio>();
-
-         Object temp = getLastNonConfigurationInstance();
-        if (temp!= null) {
-            Songs= (ArrayList<Audio>) temp;
-            adapter=new SongAdapter(this,Songs);
-            lvMain.setAdapter(adapter);
-            Log.i("MAIN","set audio to adapter");
-            temp=null;
-        }
-        else {
-
+//
+//        DBhelper help=new DBhelper(this);
+//        SQLiteDatabase db =help.getWritableDatabase() ;
+//        ContentValues cv = new ContentValues();
+//
+//        for(int a=0;a<100;a++){
+//
+//               cv.put("name",Integer.toString(a));
+//               cv.put("email", "email "+Integer.toString(a));
+//
+//            long rowID = db.insert("mytable", null, cv);
+//            Log.d("DB","row inserted, ID = " + rowID);
+//        }
+//        lvMain= (ListView) findViewById(R.id.lvMain);
+//        token=(TextView)findViewById(R.id.token);
+//         Songs=new ArrayList<Audio>();
+//
+//         Object temp = getLastNonConfigurationInstance();
+//        if (temp!= null) {
+//            Songs= (ArrayList<Audio>) temp;
+//            adapter=new SongAdapter(this,Songs);
+//            lvMain.setAdapter(adapter);
+//            Log.i("MAIN","set audio to adapter");
+//            temp=null;
+//        }
+//        else {
+//
             Intent intent = new Intent(this, VkLogin.class);
             startActivityForResult(intent, 1);//
-        }
+//        }
 
 
 
@@ -69,32 +83,7 @@ public class MyActivity extends Activity {
 //        {
 //            Log.e("AUDIO url",f.getUrl());
 //        }
-//        Thread d=new Thread(){
-//
-//            @Override
-//            public void run() {
-//                Document doc = null;
-//                try {
-//                    doc = Jsoup.connect("http://www.radioroks.com.ua/playlist?d=22-12-2012").get();
-//                    Elements content = doc.getElementsByClass("songTitle");
-//                    for(Element l:content){
-//
-//                         Elements o=l.select("span");
-//                         String Artist=o.text();
-//                         String SongName=l.text().substring(l.text().indexOf("-")+1);
-//                        Log.e("Song ",Artist +"    "+ SongName);
-//                        //Log.e("SONG NAME",SongName);
-//
-//                        //Log.e("SPAN",l.attr("span").toString());
-//                        //System.out.print(l.select("a").attr("href"));
-//                        // System.out.println(l.children().toString());
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//                }
-//            }
-//        };
-//            d.start();
+
 
 
 
@@ -121,12 +110,57 @@ public class MyActivity extends Activity {
 //            }
 //        };
 //        Get.start();
-                     manager=new AudioManager(ac_token);
-                               manager.RefreshAudioList();
 
-                 Songs.addAll(manager.AudioList);
-                 adapter=new SongAdapter(this,Songs);
-                   lvMain.setAdapter(adapter);
+        Thread d=new Thread(){
+
+            @Override
+            public void run() {
+                Document doc = null;
+                try {
+                    doc = Jsoup.connect("http://www.radioroks.com.ua/playlist?d=22-12-2012").get();
+                    Elements content = doc.getElementsByClass("songTitle");
+                    for(Element l:content){
+
+                        Elements o=l.select("span");
+                        String Artist=o.text().trim();
+                        String SongName=l.text().substring(l.text().indexOf("-")+1).trim();
+                       // Log.e("Song ",Artist +"    "+ SongName);
+                        //Log.e("SONG NAME",SongName);
+
+                        manager=new AudioManager(ac_token);
+
+
+                        String request= SongName+" "+Artist;
+                               request=request.trim();
+                               request=request.replaceAll(" ","%20");
+                               request=request.replaceAll(":","%3A");
+                               request=request.replaceAll("|","7C");
+                        //Log.e("Audio","search audio "+request);
+
+                        List<Audio> audios = manager.SearchAudio(request);
+
+                        for(Audio a:audios)
+                        {
+                            Log.e("Response ",a.getArtist()+"  "+a.getSongName());
+                            break;
+                        }
+
+                        //Log.e("SPAN",l.attr("span").toString());
+                        //System.out.print(l.select("a").attr("href"));
+                        // System.out.println(l.children().toString());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+        };
+        d.start();
+
+                               //manager.RefreshAudioList();
+
+//                 Songs.addAll(manager.AudioList);
+//                 adapter=new SongAdapter(this,Songs);
+//                   lvMain.setAdapter(adapter);
 
     }
 

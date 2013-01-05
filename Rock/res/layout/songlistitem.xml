@@ -3,24 +3,23 @@
 <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="70dp" xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="#2939ff" android:orientation="horizontal">
+        android:background="#f8f8ff" android:orientation="vertical">
     <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
 
             android:id="@+id/Artist"
-            android:layout_gravity="bottom|top"
             android:layout_weight="1"
-            android:textColor="#ffffff"
+            android:textColor="#696969"
 
             android:textSize="15dp"
-            android:textStyle="bold|italic" android:gravity="center" android:text="Nicelbes dsfgdsfg fd  sdf dsfgdfsgsfghdfhdfhdfh " android:maxLines="3"/>
+            android:textStyle="bold|italic" android:gravity="center" android:maxLines="1" android:autoText="false"
+            android:layout_gravity="left" android:paddingLeft="10dp"/>
     <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:text="New Text"
             android:id="@+id/SongName"
             android:layout_weight="1"
             android:textSize="14dp"
-            android:gravity="center"/>
+            android:gravity="center" android:layout_gravity="left" android:textColor="#bebebe"/>
 </LinearLayout>

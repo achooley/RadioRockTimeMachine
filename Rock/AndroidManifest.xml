@@ -16,5 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".VkLogin"/>
+        <activity android:name=".Download"
+
+                />
     </application>
 </manifest>
