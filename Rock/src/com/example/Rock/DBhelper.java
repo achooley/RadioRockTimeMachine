@@ -16,34 +16,32 @@ import android.util.Log;
 
 public class DBhelper extends SQLiteOpenHelper {
 
-    public final String DBname="AudioDB";
+    public final String DBname="VKAudioDB";
 
-    public final String Table_Artist="Artist";
-    public final String Artist_id="id";
-    public final String Artist_Name="Name";
-
-    public final String Table_Track="Track";
+    public final String Table_Name="Track";
     public final String Track_id="id";
+    public final String Table_Audio="Artist";
     public final String Track_Name="Name";
     public final String Track_Artist="Artist";
+    public final String Track_time="Time";
+    public final String Track_SDPath="SDPath";
 
-
-
-
-
-    public DBhelper(Context context) {
+   public DBhelper(Context context) {
         // конструктор суперкласса
-        super(context,"AudioDB", null, 1);
+        super(context,"VKAudioDB", null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("CreateDB", "--- onCreate database ---");
         // создаем таблицу с полями
-        db.execSQL("create table Artist ("
+        db.execSQL("create table "+Table_Name+" ("
                 + "id integer primary key autoincrement,"
-                + "Name text,"
-                + "email text" + ");");
+                + Track_Name    +" text,"
+                + Track_Artist  +" text,"
+                + Track_time    +" text,"
+                + Track_SDPath  +" text"
+                + ");");
     }
 
     @Override

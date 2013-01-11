@@ -3,6 +3,7 @@ package com.example.Rock;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +42,7 @@ public class MyActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        Log.e("Music Count ",Integer.toString(AudioDBManager.getInstance(this).getAudioCount()));
 //
 //        DBhelper help=new DBhelper(this);
 //        SQLiteDatabase db =help.getWritableDatabase() ;
@@ -96,6 +98,15 @@ public class MyActivity extends Activity {
 
         ac_token=new Token();
         ac_token.setToken(data.getStringExtra("TOKEN"));
+        AudioManager manager=new AudioManager(ac_token);
+
+                    manager.RefreshAudioList();
+            for(Audio f:manager.AudioList)
+                {
+                    Log.e("AUDIO url",f.getArtist());
+                }
+         AudioDBManager.getInstance(this).AddNewTrack(manager.AudioList);
+
 
 //        Thread Get=new Thread(){
 //
@@ -111,50 +122,50 @@ public class MyActivity extends Activity {
 //        };
 //        Get.start();
 
-        Thread d=new Thread(){
-
-            @Override
-            public void run() {
-                Document doc = null;
-                try {
-                    doc = Jsoup.connect("http://www.radioroks.com.ua/playlist?d=22-12-2012").get();
-                    Elements content = doc.getElementsByClass("songTitle");
-                    for(Element l:content){
-
-                        Elements o=l.select("span");
-                        String Artist=o.text().trim();
-                        String SongName=l.text().substring(l.text().indexOf("-")+1).trim();
-                       // Log.e("Song ",Artist +"    "+ SongName);
-                        //Log.e("SONG NAME",SongName);
-
-                        manager=new AudioManager(ac_token);
-
-
-                        String request= SongName+" "+Artist;
-                               request=request.trim();
-                               request=request.replaceAll(" ","%20");
-                               request=request.replaceAll(":","%3A");
-                               request=request.replaceAll("|","7C");
-                        //Log.e("Audio","search audio "+request);
-
-                        List<Audio> audios = manager.SearchAudio(request);
-
-                        for(Audio a:audios)
-                        {
-                            Log.e("Response ",a.getArtist()+"  "+a.getSongName());
-                            break;
-                        }
-
-                        //Log.e("SPAN",l.attr("span").toString());
-                        //System.out.print(l.select("a").attr("href"));
-                        // System.out.println(l.children().toString());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-            }
-        };
-        d.start();
+//        Thread d=new Thread(){
+//
+//            @Override
+//            public void run() {
+//                Document doc = null;
+//                try {
+//                    doc = Jsoup.connect("http://www.radioroks.com.ua/playlist?d=22-12-2012").get();
+//                    Elements content = doc.getElementsByClass("songTitle");
+//                    for(Element l:content){
+//
+//                        Elements o=l.select("span");
+//                        String Artist=o.text().trim();
+//                        String SongName=l.text().substring(l.text().indexOf("-")+1).trim();
+//                       // Log.e("Song ",Artist +"    "+ SongName);
+//                        //Log.e("SONG NAME",SongName);
+//
+//                        manager=new AudioManager(ac_token);
+//
+//
+//                        String request= SongName+" "+Artist;
+//                               request=request.trim();
+//                               request=request.replaceAll(" ","%20");
+//                               request=request.replaceAll(":","%3A");
+//                               request=request.replaceAll("|","7C");
+//                        //Log.e("Audio","search audio "+request);
+//
+//                        List<Audio> audios = manager.SearchAudio(request);
+//
+//                        for(Audio a:audios)
+//                        {
+//                            Log.e("Response ",a.getArtist()+"  "+a.getSongName());
+//                            break;
+//                        }
+//
+//                        //Log.e("SPAN",l.attr("span").toString());
+//                        //System.out.print(l.select("a").attr("href"));
+//                        // System.out.println(l.children().toString());
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//                }
+//            }
+//        };
+//        d.start();
 
                                //manager.RefreshAudioList();
 
